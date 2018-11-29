@@ -1,6 +1,14 @@
 from graphics_isn import *
 from random import *
 
+O = Point(450,300)
+
+def aff(text):
+    h = hauteur_texte(text,12)
+    l = largeur_texte(text,12)
+    posx=(900-l)//2
+    aff_pol(text,12,Point(posx,20),white)
+
 def distance(P):
     '''
     Détermine la distance au centre de la fenêtre
@@ -25,10 +33,10 @@ def getColor(P):
             if P.y<300:
                 return green
             else:
-                return red
+                return yellow
         else:
             if P.y<300:
-                return yellow
+                return red
             else:
                 return blue
 
@@ -40,6 +48,10 @@ def ObtenirColor():
     color = None
     while color==None:
         color=getColor(wait_clic())
+    affichageBase(color)
+    joueSon(color)
+    attendre(500)
+    affichageBase(black)
     return color
 
 def joueSon(c):
@@ -66,7 +78,7 @@ def sequence(D):
 
 def AffichageFixe():
     # Initialisation de la fenêtre graphique
-    O=Point(450,300)
+    global O
     draw_fill_sector(O,250,0,pi/2,red)
     draw_fill_sector(O,250,pi/2,pi,green)
     draw_fill_sector(O,250,pi,3*pi/2,yellow)
@@ -75,19 +87,22 @@ def AffichageFixe():
     return 0
 
 def affichageBase(couleur):
-    O = Point(450, 300)
-    draw_fill_rectangle(O, 900, 600, black)
-    AffichageFixe()
+    global O
     draw_fill_circle(O, 100, couleur)
     return 0
 
 def afficheJeu(D):
-    affichageBase(D[0])
-    joueSon(D[0])
+    for k in D:
+        affichageBase(k)
+        joueSon(k)
+        attendre(2000)
+        affichageBase(black)
+        attendre(500)
     return 0
 
 def affichePerdu(D):
-    return 0
+    aff("Perdu")
+    afficheJeu(D)
 
 def Tour(D):
     D=sequence(D)
@@ -99,13 +114,19 @@ def Tour(D):
         perdu=couleur!=D[i]
         i+=1
     if perdu:
-        affichePerdu(D)
+        #affichePerdu(D)
+        return len(D)-1
     else:
-        Tour(D)
+        attendre(2000)
+        return Tour(D)
 
 def game():
-    D=sequence([])
-    Tour(D)
+    #D=sequence([])
+    #D=sequence([blue,yellow])
+    AffichageFixe()
+    D=[]
+    score=Tour(D)
+    aff("Score = "+str(score))
 
 def main():
     init_graphic(900,600,"Simon")
