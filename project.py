@@ -3,6 +3,19 @@ from random import *
 
 O = Point(450,300)
 
+def clear_score():
+    text = "Score : "
+    posx = 20
+    posy = hauteur_texte(text, 12) + 10
+    draw_fill_rectangle(Point(60, posy), 200, 30, black)
+
+def aff_score(score):
+    clear_score()
+    posx = 20
+    text = "Score : "
+    posy = hauteur_texte(text,12)+10
+    aff_pol(text+str(score),12,Point(posx,posy),white)
+
 def aff(text):
     h = hauteur_texte(text,12)
     l = largeur_texte(text,12)
@@ -105,6 +118,7 @@ def affichePerdu(D):
     afficheJeu(D)
 
 def Tour(D):
+    aff_score(len(D))
     D=sequence(D)
     afficheJeu(D)
     i=0
