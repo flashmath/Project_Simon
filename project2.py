@@ -2,7 +2,7 @@ from graphics_isn import *
 from random import *
 
 O = Point(450,300)
-D=[];
+D=[]
 
 def clear_score():
     text = "Score : "
