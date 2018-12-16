@@ -1,8 +1,11 @@
 from graphics_isn import *
 from random import *
+from debut import *
 
 O = Point(450,300)
-D=[];
+D=[]
+level = 0
+gameTime = 2000
 
 def clear_score():
     text = "Score : "
@@ -70,13 +73,13 @@ def ObtenirColor(Img):
 
 def joueSon(c):
     if c==green:
-        F="green.wav"
+        F="xyl1.wav"
     elif c==blue:
-        F="blue.wav"
+        F="xyl2.wav"
     elif c==red:
-        F="red.wav"
+        F="xyl3.wav"
     else:
-        F="yellow.wav"
+        F="xyl4.wav"
     play_sound(F)
 
 def sequence(D):
@@ -126,13 +129,20 @@ def affichageBase(Img,couleur):
         window.blit(Img[4], (0, 0))
     return 0
 
+def getTime():
+    global gameTime, level
+    if level==3:
+        gameTime=0.95*gameTime
+    return int(gameTime)
+
 def afficheJeu(Img,D):
+    time=getTime()
     for k in D:
         affichageBase(Img,k)
         joueSon(k)
-        attendre(2000)
+        attendre(time)
         affichageBase(Img,black)
-        attendre(500)
+        attendre(time//4)
     return 0
 
 def affichePerdu(D):
@@ -165,8 +175,13 @@ def game():
     #aff("Score = "+str(score))
 
 def main():
+    global level
+    global gameTime
     init_graphic(900,600,"Simon")
 
+    level=menu_start(pygame)
+    if level==2:
+        gameTime=1000
     game()
     #color = ObtenirColor()
     #joueSon(color)
